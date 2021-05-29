@@ -47,9 +47,10 @@ namespace ValheimWorldBackupUtility
 
             if (Directory.Exists(_worldsRootPath) == false)
             {
-                throw new DirectoryNotFoundException(
-                    $"Server worlds directory not found in {_worldsRootPath}"
-                );
+                var message = $"Server worlds directory not found in {_worldsRootPath}";
+                
+                Program.log.addLog(message);
+                throw new DirectoryNotFoundException(message);
             }
 
             _backupPath = Path.Combine(_worldsRootPath, "backups");
@@ -61,7 +62,10 @@ namespace ValheimWorldBackupUtility
 
             if (Program.options.worldName != null && File.Exists(_worldPath) == false)
             {
-                throw new FileNotFoundException($"World with name {Program.options.worldName} not found");
+                var message = $"World with name {Program.options.worldName} not found";
+                
+                Program.log.addLog(message);
+                throw new FileNotFoundException(message);
             }
 
             Console.WriteLine("Creating initial backup...");
@@ -107,7 +111,10 @@ namespace ValheimWorldBackupUtility
                 backupFile(file, folderName, folderPath);
             }
 
-            Console.WriteLine($"Successfully created backup {folderName}");
+            var message = $"Successfully created backup {folderName}";
+            
+            Console.WriteLine(message);
+            Program.log.addLog(message);
         }
 
         public void backupFile(string filePath, string folderName, string folderPath)
@@ -138,9 +145,12 @@ namespace ValheimWorldBackupUtility
             {
                 File.Copy(filePath, newFilePath);
             }
-            catch
+            catch (Exception error)
             {
-                throw new FileNotFoundException($"Unable to copy file {filePath}");
+                var message = $"Unable to copy file {filePath}";
+                
+                Program.log.addLog(message);
+                Program.log.addLog(error.StackTrace);
             }
         }
 

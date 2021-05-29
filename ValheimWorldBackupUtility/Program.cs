@@ -6,11 +6,12 @@ namespace ValheimWorldBackupUtility
     
     abstract class Program
     {
-        public static readonly string VERSION = "0.9.0";
+        public static readonly string VERSION = "0.9.1";
         public static readonly int APP_ID = 892970;
         public static BackupController backup = new BackupController();
         public static OptionsController options = new OptionsController();
         public static ConsoleController console = new ConsoleController();
+        public static LogController log = new LogController();
         
         
         static void Main(string[] args)
@@ -25,14 +26,21 @@ namespace ValheimWorldBackupUtility
             catch (FileNotFoundException error)
             {
                 Console.WriteLine(error.Message);
+                log.addLog(error.Message);
+                log.addLog(error.StackTrace);
             }
             catch (DirectoryNotFoundException error)
             {
                 Console.WriteLine(error.Message);
+                log.addLog(error.Message);
+                log.addLog(error.StackTrace);
             }
-            catch
+            catch (Exception error)
             {
                 Console.WriteLine("Unknown error.");
+                log.addLog(error.Message);
+                log.addLog(error.StackTrace);
+                
                 exit();
             }
             
