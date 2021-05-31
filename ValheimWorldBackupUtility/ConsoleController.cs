@@ -26,7 +26,7 @@ namespace ValheimWorldBackupUtility
 
         public void readInterval()
         {
-            Console.WriteLine("Interval in hours (1h - default):");
+            Console.WriteLine("Interval in hours:");
 
             try
             {
